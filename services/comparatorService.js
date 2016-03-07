@@ -47,8 +47,18 @@
         var diff = deepCompare(a,b);
         if(diff){
             console.log(diff);
-            return diff;
+            diff.forEach(function(item){
+                if(item.kind == 'N'){
+                    result.added++;
+                }
+                if(item.kind == 'E'){
+                    result.updated++;
+                }
+                if(item.kind == 'D'){
+                    result.deleted++;
+                }
+            });
         }
-        return [];
+        return result;
     }
 })();
