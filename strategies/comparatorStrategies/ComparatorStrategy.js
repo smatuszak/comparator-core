@@ -16,6 +16,6 @@ ComparatorStrategy.prototype={
     execute :function(){
         throw ("NOT IMPLEMENTED - NEVER USE THIS STRATEGY");
     }
-}
+};
 
 module.exports = ComparatorStrategy;

@@ -27,6 +27,6 @@ JsonComparatorStrategy.prototype={
     execute : function(){
         return diff(this.a,this.b);
     }
-}
+};
 
 module.exports = JsonComparatorStrategy;

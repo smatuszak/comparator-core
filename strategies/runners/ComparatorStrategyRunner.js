@@ -4,7 +4,7 @@
  * Take note that the default strategy must be the
  * last entry in the array
  */
-(function(){
+
     'use strict';
     var JsonComparatorStrategy = require('../comparatorStrategies/JsonComparatorStrategy');
     var DefaultComparatorStrategy = require('../comparatorStrategies/DefaultComparatorStrategy');
@@ -29,7 +29,6 @@
             }
             return result;
         }
-    }
+    };
 
     module.exports = ComparatorStrategyRunner;
-})();
