@@ -18,6 +18,6 @@ DefaultComparatorStrategy.prototype={
     execute : function(){
         return (this.a === this.b);
     }
-}
+};
 
 module.exports = DefaultComparatorStrategy;

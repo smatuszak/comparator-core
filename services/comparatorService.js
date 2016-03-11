@@ -3,7 +3,7 @@
  */
     'use strict';
     var ComparatorStrategyRunner = require('../strategies/runners/ComparatorStrategyRunner');
-    module.exports={compare : compare,
+    module.exports={areSame : areSame,
                     deepCompare : deepCompare,
                     summarizeComparison : summarizeComparison,
                     arrayDiff : arrayDiff
@@ -12,12 +12,15 @@
     /**
      * Function that returns true when the two args are equals.
      * Equality is determinated by a strategy system
+     * Config object is optional and defines which keys
+     * are used to do the comparison
      * @param a
      * @param b
+     * @param config, a string or an array
      * @returns {boolean}
      */
-    function compare(a,b){
-        var result = deepCompare(a,b);
+    function areSame(a,b,config){
+        var result = deepCompare(a,b,config);
         if (!!result){
             return false;
         }
@@ -27,12 +30,15 @@
     /**
      * Function performing a deep compare between args.
      * Returned value is linked to the applied strategy
+     * Config object is optional and defines which keys
+     * are used to do the comparison
      * @param a
      * @param b
+     * @param config, a string or an array
      * @returns {*}
      */
     function deepCompare(a,b){
-        var runner = new ComparatorStrategyRunner(a,b);
+        var runner = new ComparatorStrategyRunner(a,b, config);
         return runner.run();
     }
 
@@ -62,49 +68,3 @@
         return result;
     }
 
-    function arrayDiff(a,b,uniqueKeyPath){
-                var result = {added:0,updated:0,deleted:0};
-        var aIndex = 0;
-        var bIndex = 0;
-        var bValue;
-        for(aIndex = 0; aIndex < a.length;aIndex++){
-            //look into b if the current element exists
-            if(typeof a[aIndex] == 'object'){
-                bValue = b.filter(function(item){
-                                        var ok = true;
-                                        if(uniqueKeyPath && uniqueKeyPath != ""){
-                                            ok &= (a[aIndex][uniqueKeyPath] == item[uniqueKeyPath]);
-                                        }
-                                        else {
-                                            Object.keys(item).forEach(function (key) {
-                                                ok &= (a[aIndex][key] == item[key]);
-                                            });
-                                        }
-                                        return ok;
-                                    });
-            }
-            else{
-                bIndex = b.indexOf(a[aIndex]);
-                bValue = b[bIndex];
-            }
-
-            if (bValue && ((Array.isArray(bValue) && bValue.length > 0) || (!Array.isArray(bValue)))){
-                //the element exists, let's check for some modification
-                var hasDiff = compare(a[aIndex],Array.isArray(bValue)?bValue[0]:bValue);
-                if(!hasDiff){
-                    result.updated++;
-                }
-            }
-            else{
-                //current element has disappeared
-                result.deleted++;
-            }
-        }
-        // check if b contains more elements than a
-        while(aIndex < b.length){
-            result.added++;
-            aIndex++;
-        }
-        console.log(result);
-        return result;
-    }

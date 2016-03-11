@@ -6,14 +6,15 @@
  */
 
     'use strict';
-    var JsonComparatorStrategy = require('../comparatorStrategies/JsonComparatorStrategy');
+    var ComplexComparatorStrategy = require('../comparatorStrategies/ComplexComparatorStrategy');
     var DefaultComparatorStrategy = require('../comparatorStrategies/DefaultComparatorStrategy');
 
-    function ComparatorStrategyRunner(a,b){
+    function ComparatorStrategyRunner(a,b,config){
         this.a = a;
         this.b = b;
+        this.config = config;
         this.strategies = [];
-        this.strategies.push(new JsonComparatorStrategy(this.a,this.b));
+        this.strategies.push(new ComplexComparatorStrategy(this.a,this.b, this.config));
         this.strategies.push(new DefaultComparatorStrategy(this.a,this.b));
 
     }
@@ -28,6 +29,12 @@
                 }
             }
             return result;
+        },
+        runWith : function(a,b,config){
+            this.a = config;
+            this.b = b;
+            this.config = config;
+            return this.run();
         }
     };
 

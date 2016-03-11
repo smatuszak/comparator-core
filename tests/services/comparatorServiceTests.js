@@ -26,12 +26,12 @@ describe('Comparator service unit tests',function(){
         var a = {a:"test"};
         var b = {a:"test"};
         it('should return true',function(done){
-            assert.equal(service.compare(a,b),true);
+            assert.equal(service.areSame(a,b),true);
             done();
         });
         it('should return false',function(done){
             b = {b:"test"};
-            assert.equal(service.compare(a,b),false);
+            assert.equal(service.areSame(a,b),false);
             done();
         });
     });
@@ -130,6 +130,17 @@ describe('Comparator service unit tests',function(){
             assert.equal(result.updated,0);
             assert.equal(result.deleted,1);
             done();
+        });
+    });
+    describe('Complete diff of complex JSON objects',function(){
+        describe('Comparing JSON objects containing a simple attribute and an array of objects',function(){
+            it('should return no difference',function(done){
+                var a = {region:"Sud-Ouest", agencies:[{"agency_id":"OCESN","agency_name":"SNCF","agency_url":"http://www.ter-sncf.com","agency_timezone":"Europe/Paris","agency_lang":"fr"},{"agency_id":"OCECRLR","agency_name":"Conseil Régional Languedoc-Roussillon","agency_url":"http://www.ter-sncf.com","agency_timezone":"Europe/Paris","agency_lang":"fr"}]};
+                var b = {region:"Sud-Ouest", agencies:[{"agency_id":"OCESN","agency_name":"SNCF","agency_url":"http://www.ter-sncf.com","agency_timezone":"Europe/Paris","agency_lang":"fr"},{"agency_id":"OCECRLR","agency_name":"Conseil Régional Languedoc-Roussillon","agency_url":"http://www.ter-sncf.com","agency_timezone":"Europe/Paris","agency_lang":"fr"}]};
+                var config="agencies.agency_id";
+                var result = service.areSame(a, b, config);
+
+            });
         });
     });
 });
