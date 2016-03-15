@@ -9,14 +9,11 @@ var ComplexComparatorStrategy = require('../comparatorStrategies/ComplexComparat
 
 
 function JsonComparatorStrategy(a,b,config){
-
-    this.a = a;
-    this.b = b;
-    this.config = config;
-
+    ComplexComparatorStrategy.call(this,a,b,config);
 }
+//util.inherits(JsonComparatorStrategy, ComplexComparatorStrategy);
+JsonComparatorStrategy.prototype = Object.create(ComplexComparatorStrategy.prototype);
 JsonComparatorStrategy.prototype.constructor = JsonComparatorStrategy;
-util.inherits(JsonComparatorStrategy, ComplexComparatorStrategy);
 
 JsonComparatorStrategy.prototype = {
     isApplicable: function () {
@@ -41,8 +38,8 @@ JsonComparatorStrategy.prototype = {
                     diff = [];
                 }
                 //time for recursion
-                /*var runner = new ComparatorStrategyRunner(that.a[key],that.b[key], that.config);
-                 diff.push(runner.run());*/
+                var runner = new ComparatorStrategyRunner(that.a[key],that.b[key], that.config);
+                 diff.push(runner.run());
             }
             else {
                 if (!(that.b[key] && that.a[key] == that.b[key])) {

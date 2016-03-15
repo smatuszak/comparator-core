@@ -8,14 +8,13 @@ var ComplexComparatorStrategy = require('../comparatorStrategies/ComplexComparat
 var ComparatorStrategyRunner = require('../runners/ComparatorStrategyRunner');
 
 function ArrayComparatorStrategy(a,b,config){
-    this.a = a;
-    this.b = b;
-    this.config = config;
+    c.call(this,a,b,config);
 
 }
-util.inherits(ArrayComparatorStrategy, ComplexComparatorStrategy);
-
-ArrayComparatorStrategy.prototype={
+//util.inherits(ArrayComparatorStrategy, ComplexComparatorStrategy);
+ArrayComparatorStrategy.prototype = Object.create(ArrayComparatorStrategy.prototype);
+ArrayComparatorStrategy.prototype.constructor =ArrayComparatorStrategy;
+    ArrayComparatorStrategy.prototype={
     isApplicable : function(){
         return Array.isArray(this.a) && Array.isArray(this.b);
 

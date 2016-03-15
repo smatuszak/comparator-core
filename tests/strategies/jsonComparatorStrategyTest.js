@@ -2,19 +2,19 @@
  * Created by smatuszak on 10/03/16.
  */
 var chai = require('chai');
-//var JsonComparatorStrategy = require('../../strategies/comparatorStrategies/JsonComparatorStrategy');
-var ArrayComparatorStrategy = require('../../strategies/comparatorStrategies/ArrayComparatorStrategy');
+var JsonComparatorStrategy = require('../../strategies/comparatorStrategies/JsonComparatorStrategy');
+//var ArrayComparatorStrategy = require('../../strategies/comparatorStrategies/ArrayComparatorStrategy');
 var assert = chai.assert;
 
 describe('JsonComparatorStrategy unit tests',function(){
-    /*it('Strategy can\'t be applied (a is a string)', function(done){
+    it('Strategy can\'t be applied (a is a string)', function(done){
         var a ="test";
         var b = {test:"test"};
         var strat = new JsonComparatorStrategy(a,b);
         assert.equal(strat.isApplicable(),false);
         done();
-    });*/
-    it('a == b should not produce difference (a and b are equal)', function(done){
+    });
+/*    it('a == b should not produce difference (a and b are equal)', function(done){
         var a =[{test:"test"}];
         var b = [{test:"test"}];
         var expectedResult =undefined;
@@ -23,8 +23,8 @@ describe('JsonComparatorStrategy unit tests',function(){
         assert.equal(strat.isApplicable(),true);
         assert.equal(result,expectedResult);
         done();
-    });
-    /*it('a == b doesn\'t produces any difference (a and b are equal)', function(done){
+    });*/
+    it('a == b doesn\'t produces any difference (a and b are equal)', function(done){
         var a ={test:"test"};
         var b = {test:"test"};
         var strat = new JsonComparatorStrategy(a,b);
@@ -74,7 +74,7 @@ describe('JsonComparatorStrategy unit tests',function(){
         assert.equal(strat.isApplicable(),true);
         assert.equal(result,expectedResult);
         done();
-    });*/
+    });
 
 
 });

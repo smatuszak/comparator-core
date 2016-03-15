@@ -8,13 +8,13 @@ var JsonComparatorStrategy = require('../comparatorStrategies/JsonComparatorStra
 var ArrayComparatorStrategy = require('../comparatorStrategies/ArrayComparatorStrategy')
 
 function ComplexComparatorStrategy(a,b, config){
-    this.a = a;
-    this.b = b;
-    this.config = config;
-    this.strategies.push(new JsonComparatorStrategy(this.a,this.b,this.config));
-    this.strategies.push(new ArrayComparatorStrategy(this.a,this.b,this.config));
+    ComparatorStrategy.call(this,a,b,config);
+    this.strategies = [];
+
 }
-util.inherits(ComplexComparatorStrategy, ComparatorStrategy);
+//util.inherits(ComplexComparatorStrategy, ComparatorStrategy);
+ComplexComparatorStrategy.prototype = Object.create(ComparatorStrategy.prototype);
+ComplexComparatorStrategy.prototype.constructor = ComplexComparatorStrategy;
 
 ComplexComparatorStrategy.prototype={
     isApplicable : function(){
@@ -23,6 +23,8 @@ ComplexComparatorStrategy.prototype={
     },
     execute : function(){
         var result;
+        this.strategies.push(Object.create(JsonComparatorStrategy.prototype));
+        this.strategies.push(new ArrayComparatorStrategy(this.a,this.b,this.config));
         for(var i = 0; i<this.strategies.length;i++){
             if((this.strategies[i]).isApplicable()){
                 result = (this.strategies[i]).execute();
