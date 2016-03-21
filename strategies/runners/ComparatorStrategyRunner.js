@@ -7,6 +7,7 @@
 
     'use strict';
     var ComplexComparatorStrategy = require('../comparatorStrategies/ComplexComparatorStrategy');
+    var SimpleComparatorStrategy = require('../comparatorStrategies/SimpleComparatorStrategy');
     var DefaultComparatorStrategy = require('../comparatorStrategies/DefaultComparatorStrategy');
 
     function ComparatorStrategyRunner(a,b,config){
@@ -15,6 +16,7 @@
         this.config = config;
         this.strategies = [];
         this.strategies.push(new ComplexComparatorStrategy(this.a,this.b, this.config));
+        this.strategies.push(new SimpleComparatorStrategy(this.a,this.b));
         this.strategies.push(new DefaultComparatorStrategy(this.a,this.b));
 
     }
@@ -29,12 +31,6 @@
                 }
             }
             return result;
-        },
-        runWith : function(a,b,config){
-            this.a = config;
-            this.b = b;
-            this.config = config;
-            return this.run();
         }
     };
 

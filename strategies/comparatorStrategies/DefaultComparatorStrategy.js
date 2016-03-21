@@ -3,6 +3,7 @@
  * Default comparison strategy, always applicable
  * Perform an equality test based on the '===' operator
  */
+'use strict';
 var util = require('util');
 var ComparatorStrategy = require('../comparatorStrategies/ComparatorStrategy');
 function DefaultComparatorStrategy(a,b){

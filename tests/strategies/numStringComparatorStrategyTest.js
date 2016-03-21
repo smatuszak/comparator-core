@@ -20,36 +20,38 @@ describe('NumStringComparatorStrategy unit tests',function(){
         assert.equal(strat.isApplicable(),false);
         done();
     });
-    it('a == b should return true (a and b are string)',function(done){
+    it('a == b should not produce difference (a and b are equal)',function(done){
         var a = 'test';
         var b = 'test';
         var strat = new NumStringComparatorStrategy(a,b);
         assert.equal(strat.isApplicable(),true);
-        assert.equal(strat.execute(),true);
+        assert.equal(strat.execute(),undefined);
         done();
     });
-    it('a == b should return false (a and b are string)',function(done){
+    it('a == b produces differences (a = test and b = test2)',function(done){
         var a = 'test';
         var b = 'test2';
+        var expectedResult = [{kind: 'U', path: '', change: { from: 'test', to: 'test2' }}];
         var strat = new NumStringComparatorStrategy(a,b);
         assert.equal(strat.isApplicable(),true);
-        assert.equal(strat.execute(),false);
+        assert.equal(JSON.stringify(strat.execute()),JSON.stringify(expectedResult));
         done();
     });
-    it('a == b should return true (a and b are number)',function(done){
+    it('a == b should not produce difference (a and b are equal)',function(done){
         var a = 12;
         var b = 12;
         var strat = new NumStringComparatorStrategy(a,b);
         assert.equal(strat.isApplicable(),true);
-        assert.equal(strat.execute(),true);
+        assert.equal(strat.execute(),undefined);
         done();
     });
-    it('a == b should return false (a and b are number)',function(done){
+    it('a == b produces differences (a = 12 and b = 13)',function(done){
         var a = 12;
         var b = 13;
+        var expectedResult = [{ kind: 'U', path: '', change: { from: 12, to: 13 }}];
         var strat = new NumStringComparatorStrategy(a,b);
         assert.equal(strat.isApplicable(),true);
-        assert.equal(strat.execute(),false);
+        assert.equal(JSON.stringify(strat.execute()),JSON.stringify(expectedResult));
         done();
     });
 });

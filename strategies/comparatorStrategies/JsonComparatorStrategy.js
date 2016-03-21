@@ -3,6 +3,7 @@
  * Strategy suitable for JSON objects
  * Returns the difference between a and b
  */
+'use strict';
 var util = require('util');
 var ComparatorStrategyRunner = require('../runners/ComparatorStrategyRunner');
 var ComplexComparatorStrategy = require('../comparatorStrategies/ComplexComparatorStrategy');
@@ -11,16 +12,14 @@ var ComplexComparatorStrategy = require('../comparatorStrategies/ComplexComparat
 function JsonComparatorStrategy(a,b,config){
     ComplexComparatorStrategy.call(this,a,b,config);
 }
-//util.inherits(JsonComparatorStrategy, ComplexComparatorStrategy);
-JsonComparatorStrategy.prototype = Object.create(ComplexComparatorStrategy.prototype);
-JsonComparatorStrategy.prototype.constructor = JsonComparatorStrategy;
+util.inherits(JsonComparatorStrategy, ComplexComparatorStrategy);
 
 JsonComparatorStrategy.prototype = {
     isApplicable: function () {
         try {
-            var jsonA = JSON.parse(JSON.stringify(this.a));
-            var JsonB = JSON.parse(JSON.stringify(this.b));
-            return typeof this.a == 'object' && typeof this.b == 'object';
+            JSON.parse(JSON.stringify(this.a));
+            JSON.parse(JSON.stringify(this.b));
+            return !Array.isArray(this.a) && !Array.isArray(this.b) && typeof this.a == 'object' && typeof this.b == 'object';
 
         } catch (e) {
             return false;
@@ -29,17 +28,21 @@ JsonComparatorStrategy.prototype = {
     execute: function () {
         var diff = undefined;
         var that = this;
-        var aKeys = Object.keys(this.a);
-        var bKeys = Object.keys(this.b);
+        var aKeys = Object.keys(that.a);
+        var bKeys = Object.keys(that.b);
         //let's check if any modification exists between the two objects
         aKeys.forEach(function (key) {
             if (typeof that.a[key] == 'object') {
-                if (!diff) {
-                    diff = [];
-                }
+
                 //time for recursion
                 var runner = new ComparatorStrategyRunner(that.a[key],that.b[key], that.config);
-                 diff.push(runner.run());
+                var subResult = runner.run();
+                if(subResult){
+                    if (!diff) {
+                        diff = [];
+                    }
+                    diff.push(subResult[0]);
+                }
             }
             else {
                 if (!(that.b[key] && that.a[key] == that.b[key])) {
@@ -48,11 +51,11 @@ JsonComparatorStrategy.prototype = {
                     }
                     if (!that.b[key]) {
                         //element has disappeared
-                        diff.push({kind: 'D', path: key, change: {from: that.a[key], to: undefined}});
+                        diff.push({kind: 'D', path: key,id:that.a[that.config], change: {from: that.a[key], to: undefined}});
                     }
                     else {
                         //element is modified
-                        diff.push({kind: 'U', path: key, change: {from: that.a[key], to: that.b[key]}});
+                        diff.push({kind: 'U', path: key,id:that.a[that.config], change: {from: that.a[key], to: that.b[key]}});
                     }
                 }
             }
@@ -64,10 +67,9 @@ JsonComparatorStrategy.prototype = {
                     diff = [];
                 }
                 //element doesn't exist in a
-                diff.push({kind: 'A', path: key, change: {from: 'undefined', to: that.b[key]}});
+                diff.push({kind: 'A', path: key, id:that.b[that.config], change: {from: 'undefined', to: that.b[key]}});
             }
         });
-        console.log(diff);
         return diff;
     }
 };

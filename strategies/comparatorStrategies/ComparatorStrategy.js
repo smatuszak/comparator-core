@@ -3,10 +3,11 @@
  * Top level strategy, only used to define
  * the functions we need to implement
  */
-
-function ComparatorStrategy (a,b){
+'use strict';
+function ComparatorStrategy (a,b,config){
     this.a = a;
     this.b = b;
+    this.config = config;
 }
 
 ComparatorStrategy.prototype={
