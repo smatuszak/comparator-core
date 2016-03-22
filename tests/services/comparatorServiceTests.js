@@ -1,5 +1,5 @@
 var chai = require('chai');
-var service = require('../../services/comparatorService');
+var service = require('../../services/comparator');
 var assert = chai.assert;
 var agencies = require('../data/agencies.json');
 
